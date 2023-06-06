@@ -1,0 +1,2 @@
+1. PaintComponent je metoda iz JPanel
+2. Nikiada ne inicijalizuj u petlji igre, jer ce se kreirati novi objekat na svaki refresh
