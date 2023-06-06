@@ -15,6 +15,7 @@ public class Player extends Entity {
 
     public final int screenX;
     public final int screenY;
+    int hasKey = 0;
 
     public Player(GamePanel gp, KeyHandler keyH){
         this.gp = gp;
@@ -99,7 +100,27 @@ public class Player extends Entity {
 
     public void pickUpObject(int i){
         if(i != 999){
-            gp.obj[i] = null;
+            String objectName = gp.obj[i].name;
+
+            switch(objectName){
+                case "Key":
+                    gp.playSE(1);
+                    hasKey++;
+                    gp.obj[i] = null;
+                    break;
+                case "Door":
+                    if(hasKey > 0){
+                        gp.playSE(3);
+                        gp.obj[i] = null;
+                        hasKey--;
+                    }
+                    break;
+                case "Boots":
+                    gp.playSE(2);
+                    speed += 1;
+                    gp.obj[i] = null;
+                    break;
+            }
         }
     }
 
