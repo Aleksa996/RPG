@@ -1,2 +1,3 @@
 1. PaintComponent je metoda iz JPanel
 2. Nikiada ne inicijalizuj u petlji igre, jer ce se kreirati novi objekat na svaki refresh
+3. Metoda scaleImage je dodata radi poboljsanja performansi, da se slika prvo skalira pa tek onda koristi za prikazivanje
