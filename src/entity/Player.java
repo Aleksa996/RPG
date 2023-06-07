@@ -2,23 +2,18 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
-import main.UtilityTool;
-
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 public class Player extends Entity {
 
-    GamePanel gp;
     KeyHandler keyH;
 
     public final int screenX;
     public final int screenY;
 
     public Player(GamePanel gp, KeyHandler keyH){
-        this.gp = gp;
+        super(gp);
         this.keyH = keyH;
 
         screenX = gp.screenWidth / 2 - (gp.tileSize/2);
@@ -51,17 +46,6 @@ public class Player extends Entity {
             right1 = setup("boy_right_1");
             right2 = setup("boy_right_2");
     }
-    public BufferedImage setup(String imageName){
-        UtilityTool uTool = new UtilityTool();
-        BufferedImage image = null;
-        try{
-            image = ImageIO.read(getClass().getResourceAsStream("/"+ imageName +".png"));
-            image = uTool.scaleImage(image,gp.tileSize,gp.tileSize);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return image;
-    }
     public void update(){
 
         if(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed){
@@ -83,6 +67,9 @@ public class Player extends Entity {
             //CHECK OBJ COLLISION
             int objIndex = gp.cChecker.checkObject(this,true);
             pickUpObject(objIndex);
+            //CHECK NPC COLLISION
+            int npcIndex = gp.cChecker.checkEntity(this,gp.npc);
+            interactNPC(npcIndex);
             //IF COLLISION IS FALSE, PLAYER CAN MOVE
             if(!collisionOn){
                 switch(direction){
@@ -106,6 +93,12 @@ public class Player extends Entity {
     }
 
     public void pickUpObject(int i){
+        if(i != 999){
+
+        }
+    }
+
+    public void interactNPC(int i){
         if(i != 999){
 
         }
