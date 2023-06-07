@@ -11,23 +11,19 @@ public class GamePanel extends JPanel implements Runnable {
     //screen setings
     final int originalTileSize = 16; // 16x16
     final int scale = 3;
-
     public final int tileSize = originalTileSize * scale; //48x48
     public final int maxScreenCol = 16;
     public final int maxScreenRow = 12;
     public final int screenWidth = tileSize * maxScreenCol; // 768px
     public final int screenHeight = tileSize * maxScreenRow; // 576px
-
     //world settings
     public final int maxWorldCol = 50;
     public final int maxWorldRow = 50;
-
     //FPS
     int FPS = 60;
-
     //SYSTEM
     TileManager tileM = new TileManager(this);
-    KeyHandler keyH = new KeyHandler();
+    KeyHandler keyH = new KeyHandler(this);
     //one for music another for sound effect because override effect
     Sound music = new Sound();
     Sound se = new Sound();
@@ -35,10 +31,13 @@ public class GamePanel extends JPanel implements Runnable {
     public AssetSetter aSetter = new AssetSetter(this);
     public UI ui = new UI(this);
     Thread gameThread;
-
     //ENTITY AND OBJECTS
     public Player player = new Player(this,keyH);
     public SuperObject obj[] = new SuperObject[10];
+    //GAME STATES
+    public int gameState;
+    public final int playState = 1;
+    public final int pauseState = 2;
 
     public GamePanel(){
 
@@ -52,6 +51,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void setUpGame(){
         aSetter.setObject();
         playMusic(0);
+        gameState = playState;
     }
 
     public void startGameThread(){
@@ -82,7 +82,13 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update(){
-        player.update();
+        if(gameState == playState){
+            player.update();
+        }
+        if(gameState == pauseState){
+            //nothing
+        }
+
     }
 
     public void paintComponent(Graphics g){
