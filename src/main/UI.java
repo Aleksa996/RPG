@@ -1,6 +1,10 @@
 package main;
 
+import object.OBJ_Heart;
+import object.SuperObject;
+
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
 
 public class UI {
@@ -9,6 +13,7 @@ public class UI {
     Font arial_40,arial_80B;
     Graphics2D g2;
 
+    BufferedImage heart_full, heart_half, heart_blank;
     public boolean messageOn = false;
     public String message = "";
     int messageCounter = 0;
@@ -24,7 +29,11 @@ public class UI {
         this.gp = gp;
         arial_40 = new Font("Arial", Font.PLAIN, 40);
         arial_80B = new Font("Arial", Font.BOLD, 80);
-
+        //CREATE HUD OBJECT
+        SuperObject heart = new OBJ_Heart(gp);
+        heart_full = heart.image;
+        heart_half = heart.image2;
+        heart_blank = heart.image3;
     }
 
     public void showMessage(String text){
@@ -42,12 +51,14 @@ public class UI {
         }
 
         if(gp.gameState == gp.playState){
-            //do playState later
+            drawPlayerLife();
         }
         if(gp.gameState == gp.pauseState){
+            drawPlayerLife();
             drawPauseScreen();
         }
         if(gp.gameState == gp.dialougeState){
+            drawPlayerLife();
             drawDialougeScreen();
         }
     }
@@ -99,7 +110,6 @@ public class UI {
             int y = gp.tileSize * 3;
             g2.setColor(Color.WHITE);
             g2.drawString(text,x,y);
-
             //MENU
             g2.setFont(g2.getFont().deriveFont(Font.BOLD,56F));
             text = "NEW GAME";
@@ -109,7 +119,6 @@ public class UI {
             if(commandNum == 0){
                 g2.drawString(">",x - gp.tileSize,y);
             }
-
             text = "LOAD GAME";
             x = getXforCenteredText(text);
             y += gp.tileSize;
@@ -117,7 +126,6 @@ public class UI {
             if(commandNum == 1){
                 g2.drawString(">",x - gp.tileSize,y);
             }
-
             text = "QUIT";
             x = getXforCenteredText(text);
             y += gp.tileSize;
@@ -140,7 +148,6 @@ public class UI {
             if(commandNum == 0){
                 g2.drawString(">", x - gp.tileSize,y);
             }
-
             text = "Thief";
             x = getXforCenteredText(text);
             y += gp.tileSize;
@@ -148,7 +155,6 @@ public class UI {
             if(commandNum == 1){
                 g2.drawString(">", x - gp.tileSize,y);
             }
-
             text = "Sorcerer";
             x = getXforCenteredText(text);
             y += gp.tileSize;
@@ -156,7 +162,6 @@ public class UI {
             if(commandNum == 2){
                 g2.drawString(">", x - gp.tileSize,y);
             }
-
             text = "Back";
             x = getXforCenteredText(text);
             y += gp.tileSize*2;
@@ -165,9 +170,33 @@ public class UI {
                 g2.drawString(">", x - gp.tileSize,y);
             }
         }
-
     }
 
+    public void drawPlayerLife(){
+        int x = gp.tileSize/2;
+        int y = gp.tileSize/2;
+        int i = 0;
+        //DRAW BLANK HEART
+        while(i < gp.player.maxLife/2){
+            g2.drawImage(heart_blank,x,y,null);
+            i++;
+            x += gp.tileSize;
+        }
+        //RESET
+        x = gp.tileSize/2;
+        y = gp.tileSize/2;
+        i = 0;
+        //DRAW CURRENT LIFE
+        while(i < gp.player.life){
+            g2.drawImage(heart_half,x,y,null);
+            i++;
+            if(i < gp.player.life){
+                g2.drawImage(heart_full,x,y,null);
+            }
+            i++;
+            x+= gp.tileSize;
+        }
+    }
 }
 
 

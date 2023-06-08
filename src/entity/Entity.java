@@ -23,6 +23,10 @@ public class Entity {
     public String dialogues[] = new String[20];
     int dialogueIndex = 0;
 
+    //CHARACTER STATUS
+    public int maxLife;
+    public int life;
+
     public Entity(GamePanel gp){
         this.gp = gp;
     }
@@ -72,7 +76,6 @@ public class Entity {
                 case "right": worldX += speed; break;
             }
         }
-
         spriteCounter++;
         if(spriteCounter > 12){
             if(spriteNum == 1){
@@ -82,9 +85,7 @@ public class Entity {
             }
             spriteCounter = 0;
         }
-
     }
-
 
     public void draw(Graphics2D g2){
         BufferedImage image = null;
@@ -130,7 +131,6 @@ public class Entity {
                     }
                     break;
             }
-
             g2.drawImage(image,screenX,screenY,gp.tileSize, gp.tileSize, null);
         }
     }
@@ -146,6 +146,4 @@ public class Entity {
         }
         return image;
     }
-
-
 }

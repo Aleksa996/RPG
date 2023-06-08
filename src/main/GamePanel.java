@@ -31,6 +31,7 @@ public class GamePanel extends JPanel implements Runnable {
     public CollisionChecker cChecker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this);
     public UI ui = new UI(this);
+    public EventHandler eHandler = new EventHandler(this);
     Thread gameThread;
     //ENTITY AND OBJECTS
     public Player player = new Player(this,keyH);
@@ -43,9 +44,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int pauseState = 2;
     public final int dialougeState = 3;
 
-
     public GamePanel(){
-
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
@@ -99,7 +98,6 @@ public class GamePanel extends JPanel implements Runnable {
         if(gameState == pauseState){
             //nothing
         }
-
     }
 
     public void paintComponent(Graphics g){
