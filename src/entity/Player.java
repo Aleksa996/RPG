@@ -91,19 +91,20 @@ public class Player extends Entity {
             }
         }
     }
-
     public void pickUpObject(int i){
         if(i != 999){
 
         }
     }
-
     public void interactNPC(int i){
         if(i != 999){
-
+            if(gp.keyH.enterPressed){
+                gp.gameState = gp.dialougeState;
+                gp.npc[i].speak();
+            }
         }
+        gp.keyH.enterPressed = false;
     }
-
     public void draw(Graphics2D g2){
 
         BufferedImage image = null;
@@ -142,7 +143,6 @@ public class Player extends Entity {
                 }
                 break;
         }
-
         g2.drawImage(image, screenX, screenY,null);
     }
 }
