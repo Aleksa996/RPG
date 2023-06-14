@@ -27,6 +27,9 @@ public class Player extends Entity {
         solidArea.width = 32;
         solidArea.height = 32;
 
+        attackArea.width = 36;
+        attackArea.height = 36;
+
         setDefaultValues();
         getPlayerImage();
         getPlayerAttackImage();
@@ -125,7 +128,6 @@ public class Player extends Entity {
             }
         }
     }
-
     public void attacking(){
         spriteCounter++;
         if(spriteCounter <= 5){
@@ -133,11 +135,42 @@ public class Player extends Entity {
         }
         if(spriteCounter > 5 && spriteCounter <= 25){
             spriteNum = 2;
+            //SAVE THE CURRENT WORLDX WORLDY SOLIDAREA
+            int currentWorldX = worldX;
+            int currentWorldY = worldY;
+            int solidAreaWidth = solidArea.width;
+            int solidAreaHeight = solidArea.height;
+            //ADJUST PLAYERS WORLDX/Y FOR THE ATTACKAREA
+            switch(direction){
+                case "up": worldY -= attackArea.height; break;
+                case "down": worldY += attackArea.height; break;
+                case "left": worldX -= attackArea.width; break;
+                case "right": worldX += attackArea.width; break;
+            }
+            // attackArea becomes solidArea
+            solidArea.width = attackArea.width;
+            solidArea.height = attackArea.height;
+            //Check monster collision with the updated worldX,worldY and solidArea
+            int monsterIndex = gp.cChecker.checkEntity(this,gp.monster);
+            damageMonster(monsterIndex);
+            //After checking collision, restore the original data
+            worldX = currentWorldX;
+            worldY = currentWorldY;
+            solidArea.width = solidAreaWidth;
+            solidArea.height = solidAreaHeight;
+
         }
         if(spriteCounter > 25){
             spriteNum = 1;
             spriteCounter = 0;
             attacking = false;
+        }
+    }
+    public void damageMonster(int i){
+        if(i != 999){
+            System.out.println("Hit!");
+        }else{
+            System.out.println("Miss!");
         }
     }
     public void pickUpObject(int i){
@@ -163,10 +196,8 @@ public class Player extends Entity {
                 life -= 1;
                 invincible = true;
             }
-
         }
     }
-
     public void draw(Graphics2D g2){
 
         BufferedImage image = null;
@@ -217,7 +248,6 @@ public class Player extends Entity {
                 }
                 break;
         }
-
         if(invincible){
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3F));
         }
