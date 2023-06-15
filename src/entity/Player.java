@@ -8,9 +8,9 @@ import java.awt.image.BufferedImage;
 public class Player extends Entity {
 
     KeyHandler keyH;
-
     public final int screenX;
     public final int screenY;
+    public boolean attackCanceled = false;
 
     public Player(GamePanel gp, KeyHandler keyH){
         super(gp);
@@ -107,6 +107,15 @@ public class Player extends Entity {
                     case "right": worldX += speed; break;
                 }
             }
+
+            if(keyH.enterPressed && !attackCanceled){
+                gp.playSE(7);
+                attacking = true;
+                spriteCounter = 0;
+            }
+
+            attackCanceled = false;
+
             gp.keyH.enterPressed = false;
 
             spriteCounter++;
@@ -168,9 +177,15 @@ public class Player extends Entity {
     }
     public void damageMonster(int i){
         if(i != 999){
-            System.out.println("Hit!");
-        }else{
-            System.out.println("Miss!");
+            if(!gp.monster[i].invincible){
+                gp.playSE(5);
+                gp.monster[i].life -= 1;
+                gp.monster[i].invincible = true;
+                gp.monster[i].damageReaction();
+                if(gp.monster[i].life <= 0){
+                    gp.monster[i].dying = true;
+                }
+            }
         }
     }
     public void pickUpObject(int i){
@@ -181,18 +196,16 @@ public class Player extends Entity {
     public void interactNPC(int i){
         if(i != 999){
             if(gp.keyH.enterPressed){
+                attackCanceled = true;
                 gp.gameState = gp.dialougeState;
                 gp.npc[i].speak();
-            }
-        }else{
-            if(gp.keyH.enterPressed){
-                attacking = true;
             }
         }
     }
     public void contactMonster(int i){
         if(i != 999){
             if(!invincible){
+                gp.playSE(6);
                 life -= 1;
                 invincible = true;
             }
