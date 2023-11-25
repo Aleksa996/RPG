@@ -41,6 +41,20 @@ public class Entity {
     //CHARACTER STATUS
     public int maxLife;
     public int life;
+    public int strength;
+    public int level;
+    public int dexterity;
+    public int attack;
+    public int defense;
+    public int exp;
+    public int nextLvlExp;
+    public int coin;
+    public Entity currentWeapon;
+    public Entity currentShield;
+
+    //ITEM ATRIBUTES
+    public int attackValue;
+    public int defenseValue;
 
     public Entity(GamePanel gp){
         this.gp = gp;
