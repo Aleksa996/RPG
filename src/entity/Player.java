@@ -46,7 +46,7 @@ public class Player extends Entity {
         maxLife = 6;
         life = maxLife;
         level = 1;
-        strength = 1;
+        strength = 2;
         dexterity = 1;
         exp = 0;
         nextLvlExp = 5;
@@ -200,15 +200,43 @@ public class Player extends Entity {
         if(i != 999){
             if(!gp.monster[i].invincible){
                 gp.playSE(5);
-                gp.monster[i].life -= 1;
+                int damage = attack - gp.monster[i].defense;
+                if(damage < 0){
+                    damage = 0;
+                }
+                gp.monster[i].life -= damage;
+
+                gp.ui.addMessage(damage + "damage!");
+
                 gp.monster[i].invincible = true;
                 gp.monster[i].damageReaction();
                 if(gp.monster[i].life <= 0){
                     gp.monster[i].dying = true;
+                    gp.ui.addMessage("killed the " + gp.monster[i].name + "!");
+                    exp += gp.monster[i].exp;
+                    checkLevelUp();
                 }
             }
         }
     }
+
+    public void checkLevelUp(){
+        System.out.println("LevelUpCheck " + exp + " " + nextLvlExp);
+        if(exp > nextLvlExp){
+            level++;
+            nextLvlExp = nextLvlExp*2;
+            strength++;
+            dexterity++;
+            attack = getAttack();
+            defense = getDefense();
+
+            gp.playSE(8);
+            gp.gameState = gp.dialougeState;
+            gp.ui.currentDialouge = "You are level " + level + "now!\n"
+                    + "You feal stronger!";
+        }
+    }
+
     public void pickUpObject(int i){
         if(i != 999){
 
@@ -226,8 +254,12 @@ public class Player extends Entity {
     public void contactMonster(int i){
         if(i != 999){
             if(!invincible){
+                int damage = gp.monster[i].attack - defense;
+                if(damage < 0){
+                    damage = 0;
+                }
                 gp.playSE(6);
-                life -= 1;
+                life -= damage;
                 invincible = true;
             }
         }
