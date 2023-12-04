@@ -35,9 +35,6 @@ public class Player extends Entity {
         solidArea.width = 32;
         solidArea.height = 32;
 
-        attackArea.width = 36;
-        attackArea.height = 36;
-
         setDefaultValues();
         getPlayerImage();
         getPlayerAttackImage();
@@ -70,6 +67,7 @@ public class Player extends Entity {
     }
 
     public int getAttack(){
+        attackArea = currentWeapon.attackArea;
         return attack = strength * currentWeapon.attackValue;
     }
     public int getDefense(){
