@@ -2,6 +2,7 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
+import object.OBJ_Fireball;
 import object.OBJ_Key;
 import object.OBJ_Shield_Wood;
 import object.OBJ_Sword_Normal;
@@ -56,6 +57,7 @@ public class Player extends Entity {
         coin = 0;
         currentWeapon = new OBJ_Sword_Normal(gp);
         currentShield = new OBJ_Shield_Wood(gp);
+        projectile = new OBJ_Fireball(gp);
         attack = getAttack();
         defense = getDefense();
     }
@@ -173,6 +175,16 @@ public class Player extends Entity {
                 spriteCounter = 0;
             }
         }
+
+        if(gp.keyH.shotKeyPressed && !projectile.alive){
+
+            //SET DEFAULT COORDINANTES, DIRECTION AND USER
+            projectile.set(worldX,worldY,direction,true,this);
+            //ADD IT TO THE LIST
+            gp.projectileList.add(projectile);
+            gp.playSE(10);
+        }
+
         //THIS NEED TO BE OUTSIDE OF KEY IF STATEMENT
         if(invincible){
             invicibleCounter++;
@@ -307,7 +319,7 @@ public class Player extends Entity {
     }
     public void contactMonster(int i){
         if(i != 999){
-            if(!invincible){
+            if(!invincible && !gp.monster[i].dying){
                 int damage = gp.monster[i].attack - defense;
                 if(damage < 0){
                     damage = 0;

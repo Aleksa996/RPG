@@ -39,6 +39,8 @@ public class Entity {
     //entity type
     public int type; // 0 = player 1 = npc 2 = monster
     //CHARACTER STATUS
+    public int maxMana;
+    public int mana;
     public int maxLife;
     public int life;
     public int strength;
@@ -51,11 +53,13 @@ public class Entity {
     public int coin;
     public Entity currentWeapon;
     public Entity currentShield;
+    public Projectile projectile;
 
     //ITEM ATRIBUTES
     public int attackValue;
     public int defenseValue;
     public String description = "";
+    public int useCost;
     //ITEM TYPE
     public final int type_player = 0;
     public final int type_npc = 1;
@@ -225,7 +229,6 @@ public class Entity {
         if(dyingCounter > i*6 && dyingCounter <= i*7){changeAlpha(g2,1F);}
         if(dyingCounter > i*7 && dyingCounter <= i*8){changeAlpha(g2,0F);}
         if(dyingCounter > i*8){
-            dying = false;
             alive = false;
         }
     }
