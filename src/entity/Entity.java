@@ -56,6 +56,14 @@ public class Entity {
     public int attackValue;
     public int defenseValue;
     public String description = "";
+    //ITEM TYPE
+    public final int type_player = 0;
+    public final int type_npc = 1;
+    public final int type_moster = 2;
+    public final int type_sword = 3;
+    public final int type_axe = 4;
+    public final int type_shield = 5;
+    public final int type_consumable = 6;
 
     public Entity(GamePanel gp){
         this.gp = gp;
@@ -104,7 +112,7 @@ public class Entity {
         gp.cChecker.checkEntity(this,gp.monster);
         boolean contactPlayer = gp.cChecker.checkPlayer(this);
 
-        if(this.type == 2 && contactPlayer){
+        if(this.type == type_moster && contactPlayer){
             if(!gp.player.invincible){
                 gp.playSE(6);
                 int damage = attack - gp.player.defense;
@@ -237,4 +245,6 @@ public class Entity {
         }
         return image;
     }
+
+    public void use(Entity entity){}
 }

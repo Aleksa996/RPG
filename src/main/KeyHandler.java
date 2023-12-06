@@ -6,16 +6,13 @@ public class KeyHandler implements KeyListener {
 
     public GamePanel gp;
     public boolean upPressed,downPressed,leftPressed,rightPressed,enterPressed;
-
     public KeyHandler(GamePanel gp){
         this.gp = gp;
     }
-
     @Override
     public void keyTyped(KeyEvent e) {
 
     }
-
     @Override
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
@@ -43,7 +40,6 @@ public class KeyHandler implements KeyListener {
 
 
     }
-
     @Override
     public void keyReleased(KeyEvent e) {
 
@@ -61,7 +57,6 @@ public class KeyHandler implements KeyListener {
             rightPressed = false;
         }
     }
-
     public void titleState(int code){
         if(gp.ui.titleScreenState == 0){
             if(code == KeyEvent.VK_W){
@@ -118,7 +113,6 @@ public class KeyHandler implements KeyListener {
             }
         }
     }
-
     public void playState(int code){
         if(code == KeyEvent.VK_W){
             upPressed = true;
@@ -142,19 +136,16 @@ public class KeyHandler implements KeyListener {
             gp.gameState = gp.characterState;
         }
     }
-
     public void pauseState(int code){
         if(code == KeyEvent.VK_P){
             gp.gameState = gp.playState;
         }
     }
-
     public void dialogueState(int code){
         if(code == KeyEvent.VK_ENTER){
             gp.gameState = gp.playState;
         }
     }
-
     public void characterState(int code){
         if(code == KeyEvent.VK_C){
             gp.gameState = gp.playState;
@@ -184,6 +175,8 @@ public class KeyHandler implements KeyListener {
                 gp.playSE(9);
             }
         }
+        if(code == KeyEvent.VK_ENTER){
+            gp.player.selectItem();
+        }
     }
-
 }
