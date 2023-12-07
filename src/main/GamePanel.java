@@ -42,7 +42,6 @@ public class GamePanel extends JPanel implements Runnable {
     public Entity monster[] = new Entity[20];
     public ArrayList<Entity> projectileList = new ArrayList<>();
     ArrayList<Entity> entityList = new ArrayList<>();
-
     //GAME STATES
     public int gameState;
     public final int titleState = 0;
@@ -50,7 +49,6 @@ public class GamePanel extends JPanel implements Runnable {
     public final int pauseState = 2;
     public final int dialougeState = 3;
     public final int characterState = 4;
-
     public GamePanel(){
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.black);
@@ -58,7 +56,6 @@ public class GamePanel extends JPanel implements Runnable {
         this.addKeyListener(keyH);
         this.setFocusable(true);
     }
-
     public void setUpGame(){
         aSetter.setObject();
         aSetter.setNPC();
@@ -66,12 +63,10 @@ public class GamePanel extends JPanel implements Runnable {
         //playMusic(0);
         gameState = titleState;
     }
-
     public void startGameThread(){
         gameThread = new Thread(this);
         gameThread.start();
     }
-
     @Override
     public void run() {
 
@@ -93,7 +88,6 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }
     }
-
     public void update(){
         if(gameState == playState){
             player.update();
@@ -110,10 +104,8 @@ public class GamePanel extends JPanel implements Runnable {
                     if(!monster[i].alive){
                         monster[i] = null;
                     }
-
                 }
             }
-
             for(int i = 0; i < projectileList.size(); i++){
                 if(projectileList.get(i) != null){
                     if(projectileList.get(i).alive){
@@ -125,25 +117,19 @@ public class GamePanel extends JPanel implements Runnable {
 
                 }
             }
-
-
         }
         if(gameState == pauseState){
             //nothing
         }
     }
-
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-
         Graphics2D g2 = (Graphics2D) g;
-
         //TITLE SCREEN
         if(gameState == titleState){
             ui.draw(g2);
         }else{
             tileM.draw(g2);
-
             //ADD ENTITIES TO LIST
             entityList.add(player);
             for(int i = 0; i < npc.length; i++){
@@ -161,13 +147,11 @@ public class GamePanel extends JPanel implements Runnable {
                     entityList.add(monster[i]);
                 }
             }
-
             for(int i = 0; i < projectileList.size(); i++){
                 if(projectileList.get(i) != null){
                     entityList.add(projectileList.get(i));
                 }
             }
-
             //SORT
             Collections.sort(entityList, new Comparator<Entity>() {
                 @Override
@@ -181,29 +165,23 @@ public class GamePanel extends JPanel implements Runnable {
             }
             //EMPTY ENTITY LIST
             entityList.clear();
-
-
             //UI
             ui.draw(g2);
         }
         g2.dispose();
     }
-
     public void playMusic(int i){
         music.setFile(i);
         music.play();
         music.loop();
     }
-
     public void stopMusic(){
         music.stop();
     }
-
     public void playSE(int i){
         se.setFile(i);
         se.play();
     }
-
 }
 
 

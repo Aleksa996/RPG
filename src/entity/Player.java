@@ -55,6 +55,9 @@ public class Player extends Entity {
         exp = 0;
         nextLvlExp = 5;
         coin = 0;
+        maxMana = 4;
+        mana = maxMana;
+        ammo = 10;
         currentWeapon = new OBJ_Sword_Normal(gp);
         currentShield = new OBJ_Shield_Wood(gp);
         projectile = new OBJ_Fireball(gp);
@@ -176,12 +179,14 @@ public class Player extends Entity {
             }
         }
 
-        if(gp.keyH.shotKeyPressed && !projectile.alive){
+        if(gp.keyH.shotKeyPressed && !projectile.alive && shotAvailableCounter == 30 && projectile.haveResource(this)){
 
             //SET DEFAULT COORDINANTES, DIRECTION AND USER
             projectile.set(worldX,worldY,direction,true,this);
+            projectile.subtractResource(this);
             //ADD IT TO THE LIST
             gp.projectileList.add(projectile);
+            shotAvailableCounter = 0;
             gp.playSE(10);
         }
 
@@ -193,6 +198,11 @@ public class Player extends Entity {
                 invicibleCounter = 0;
             }
         }
+
+        if(shotAvailableCounter < 30){
+            shotAvailableCounter++;
+        }
+
     }
     public void attacking(){
         spriteCounter++;
@@ -218,7 +228,7 @@ public class Player extends Entity {
             solidArea.height = attackArea.height;
             //Check monster collision with the updated worldX,worldY and solidArea
             int monsterIndex = gp.cChecker.checkEntity(this,gp.monster);
-            damageMonster(monsterIndex);
+            damageMonster(monsterIndex,attack);
             //After checking collision, restore the original data
             worldX = currentWorldX;
             worldY = currentWorldY;
@@ -232,7 +242,7 @@ public class Player extends Entity {
             attacking = false;
         }
     }
-    public void damageMonster(int i){
+    public void damageMonster(int i, int attack){
         if(i != 999){
             if(!gp.monster[i].invincible){
                 gp.playSE(5);
@@ -241,7 +251,6 @@ public class Player extends Entity {
                     damage = 0;
                 }
                 gp.monster[i].life -= damage;
-
                 gp.ui.addMessage(damage + "damage!");
 
                 gp.monster[i].invincible = true;
@@ -257,7 +266,7 @@ public class Player extends Entity {
     }
 
     public void checkLevelUp(){
-        System.out.println("LevelUpCheck " + exp + " " + nextLvlExp);
+
         if(exp > nextLvlExp){
             level++;
             nextLvlExp = nextLvlExp*2;

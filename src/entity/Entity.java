@@ -16,6 +16,7 @@ public class Entity {
     public BufferedImage attackUp1,attackUp2,attackDown1,attackDown2,
             attackLeft1,attackLeft2,attackRight1,attackRight2;
     public String direction = "down";
+    public int shotAvailableCounter = 0;
     public int spriteCounter = 0;
     public int spriteNum = 1;
     public Rectangle solidArea = new Rectangle(0,0,48,48);
@@ -39,6 +40,7 @@ public class Entity {
     //entity type
     public int type; // 0 = player 1 = npc 2 = monster
     //CHARACTER STATUS
+    public int ammo;
     public int maxMana;
     public int mana;
     public int maxLife;
@@ -54,6 +56,7 @@ public class Entity {
     public Entity currentWeapon;
     public Entity currentShield;
     public Projectile projectile;
+
 
     //ITEM ATRIBUTES
     public int attackValue;
@@ -117,15 +120,7 @@ public class Entity {
         boolean contactPlayer = gp.cChecker.checkPlayer(this);
 
         if(this.type == type_moster && contactPlayer){
-            if(!gp.player.invincible){
-                gp.playSE(6);
-                int damage = attack - gp.player.defense;
-                if(damage < 0){
-                    damage = 0;
-                }
-                gp.player.life -= damage;
-                gp.player.invincible = true;
-            }
+                damagePlayer(attack);
         }
 
         if(!collisionOn){
@@ -152,6 +147,21 @@ public class Entity {
                 invincible = false;
                 invicibleCounter = 0;
             }
+        }
+        if(shotAvailableCounter < 30){
+            shotAvailableCounter++;
+        }
+    }
+
+    public void damagePlayer(int attack){
+        if(!gp.player.invincible){
+            gp.playSE(6);
+            int damage = attack - gp.player.defense;
+            if(damage < 0){
+                damage = 0;
+            }
+            gp.player.life -= damage;
+            gp.player.invincible = true;
         }
     }
 

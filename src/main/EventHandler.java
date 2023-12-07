@@ -91,6 +91,7 @@ public class EventHandler {
             gp.player.attackCanceled = true;
             gp.ui.currentDialouge = "You drink water";
             gp.player.life = gp.player.maxLife;
+            gp.player.mana = gp.player.maxMana;
             gp.aSetter.setMonster();
         }
     }
