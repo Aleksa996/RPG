@@ -26,8 +26,5 @@ public class OBJ_Heart extends Entity {
         gp.playSE(1);
         gp.ui.addMessage("Life +" + value);
         entity.life += value;
-        if(entity.life > entity.maxLife){
-            entity.life = entity.maxLife;
-        }
     }
 }

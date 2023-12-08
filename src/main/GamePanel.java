@@ -5,6 +5,7 @@ import entity.Player;
 import tile.TileManager;
 
 import javax.swing.*;
+import javax.xml.transform.stream.StreamSource;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,7 +38,7 @@ public class GamePanel extends JPanel implements Runnable {
     Thread gameThread;
     //ENTITY AND OBJECTS
     public Player player = new Player(this,keyH);
-    public Entity obj[] = new Entity[10];
+    public Entity obj[] = new Entity[20];
     public Entity npc[] = new Entity[10];
     public Entity monster[] = new Entity[20];
     public ArrayList<Entity> projectileList = new ArrayList<>();
@@ -69,7 +70,6 @@ public class GamePanel extends JPanel implements Runnable {
     }
     @Override
     public void run() {
-
         double drawInterval = 1000000000/FPS; // 0.01666 seconds
         double delta = 0;
         long lastTime = System.nanoTime();
@@ -97,12 +97,19 @@ public class GamePanel extends JPanel implements Runnable {
                 }
             }
             for(int i = 0; i < monster.length; i++){
+
+                System.out.println("Monster lenght je " + monster.length);
+                if(monster[i] != null){
+                    if(!monster[i].alive){
+                        System.out.println("Ubijen je");
+                        monster[i].checkDrop();
+                        monster[i] = null;
+                    }
+                }
+
                 if(monster[i] != null && !monster[i].dying){
                     if(monster[i].alive){
                         monster[i].update();
-                    }
-                    if(!monster[i].alive){
-                        monster[i] = null;
                     }
                 }
             }

@@ -23,9 +23,6 @@ public class OBJ_Potion_Red extends Entity {
         gp.gameState = gp.dialougeState;
         gp.ui.currentDialouge = "You drink the " + name;
         entity.life += value;
-        if(gp.player.life > gp.player.maxLife){
-            gp.player.life = gp.player.maxLife;
-        }
         gp.playSE(2);
     }
 
